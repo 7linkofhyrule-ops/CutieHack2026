@@ -19,14 +19,14 @@
 
   <main class="wrap">
     <!-- Change action to match your Flask route that handles the quiz -->
-    <form class="quiz" id="quiz" action="/results" method="get">
+    <form class="quiz" id="quiz" action="{{ url_for('results') }}" method="post">
 
       <div>
         <div class="slider-head">
           <label for="spice"><span class="icon" aria-hidden="true">🌶️</span>How much do you like spicy food?</label>
           <output class="score" id="spice-out" for="spice">5</output>
         </div>
-        <input id="spice" name="spice" type="range" min="1" max="10" step="1" value="5">
+        <input id="spice" name="spice" type="range" min="1" max="10" step="1" value="{{ prefs.spice if prefs else 5 }}">
         <div class="scale"><span>Not at all</span><span>Love it</span></div>
       </div>
 
@@ -35,7 +35,7 @@
           <label for="sweet"><span class="icon" aria-hidden="true">🍰</span>How much do you like sweet flavors?</label>
           <output class="score" id="sweet-out" for="sweet">5</output>
         </div>
-        <input id="sweet" name="sweet" type="range" min="1" max="10" step="1" value="5">
+        <input id="sweet" name="sweet" type="range" min="1" max="10" step="1" value="{{ prefs.sweet if prefs else 5 }}">
         <div class="scale"><span>Not at all</span><span>Love it</span></div>
       </div>
 
@@ -44,7 +44,7 @@
           <label for="savory"><span class="icon" aria-hidden="true">🥩</span>How much do you like savory flavors?</label>
           <output class="score" id="savory-out" for="savory">5</output>
         </div>
-        <input id="savory" name="savory" type="range" min="1" max="10" step="1" value="5">
+        <input id="savory" name="savory" type="range" min="1" max="10" step="1" value="{{ prefs.savory if prefs else 5 }}">
         <div class="scale"><span>Not at all</span><span>Love it</span></div>
       </div>
 
@@ -52,16 +52,20 @@
         <legend>Which cuisines do you like?</legend>
         <p class="hint">Pick at least two.</p>
         <div class="chips">
-          <label class="chip"><input type="checkbox" name="cuisine" value="mediterranean"><span>🫒 Mediterranean</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="asian"><span>🥢 Asian</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="indian"><span>🍛 Indian</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="american"><span>🍔 American</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="hispanic"><span>🌮 Hispanic</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="african"><span>🍲 African</span></label>
-          <label class="chip"><input type="checkbox" name="cuisine" value="italian"><span>🍝 Italian</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="mediterranean" {% if prefs and "mediterranean" in prefs.cuisines %}checked{% endif %}><span>🫒 Mediterranean</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="asian" {% if prefs and "asian" in prefs.cuisines %}checked{% endif %}><span>🥢 Asian</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="indian" {% if prefs and "indian" in prefs.cuisines %}checked{% endif %}><span>🍛 Indian</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="american" {% if prefs and "american" in prefs.cuisines %}checked{% endif %}><span>🍔 American</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="hispanic" {% if prefs and "hispanic" in prefs.cuisines %}checked{% endif %}><span>🌮 Hispanic</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="african" {% if prefs and "african" in prefs.cuisines %}checked{% endif %}><span>🍲 African</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="italian" {% if prefs and "italian" in prefs.cuisines %}checked{% endif %}><span>🍝 Italian</span></label>
         </div>
         <p class="form-error" id="cuisine-error" role="alert" hidden>Pick at least two cuisines to continue.</p>
       </fieldset>
+
+      {% if error %}
+      <p class="form-error" role="alert">{{ error }}</p>
+      {% endif %}
 
       <button type="submit">See my matches</button>
     </form>
