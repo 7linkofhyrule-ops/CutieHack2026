@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 from urllib.parse import urljoin
 import requests
@@ -9,6 +8,8 @@ MENU_URL = (
     "?sName=University%20of%20California%2C%20Riverside%20Dining%20Services"
     "&locationNum=03&locationName=Glasgow&naFlag=1"
 )
+
+OUTPUT_TXT = Path("glasgow_menu.txt")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; UCRMenuBot/1.0)"
@@ -33,15 +34,14 @@ def is_recipe_link(href: str, text: str) -> bool:
     if "shortmenu.aspx" in lower_href or "dtdate=" in lower_href or "javascript:" in lower_href:
         return False
 
-    # FoodPro dish links typically point to label.aspx or recipe detail pages
     return "label.aspx" in lower_href or "recipe" in lower_href or href != ""
 
 
 def scrape_menu(url: str = MENU_URL) -> list[dict[str, str]]:
-    res = requests.get(url, headers=HEADERS, timeout=15)
-    res.raise_for_status()
+    response = requests.get(url, headers=HEADERS, timeout=15)
+    response.raise_for_status()
 
-    soup = BeautifulSoup(res.text, "html.parser")
+    soup = BeautifulSoup(response.text, "html.parser")
     items: list[dict[str, str]] = []
 
     current_meal = "Unknown"
@@ -78,14 +78,15 @@ def scrape_menu(url: str = MENU_URL) -> list[dict[str, str]]:
     return items
 
 
-if __name__ == "__main__":
-    output_path = Path("docs/menu.json")
-    data = scrape_menu()
+def save_to_txt(items: list[dict[str, str]], filepath: Path = OUTPUT_TXT) -> None:
+    lines = [
+        f"{entry['item']} | {entry['meal']} | {entry['station']} | {entry['url']}"
+        for entry in items
+    ]
+    filepath.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
-    if not data:
-        print("Warning: 0 menu items found. Skipping write so existing docs/menu.json is preserved.")
-    else:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {"count": len(data), "items": data}
-        output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-        print(f"Wrote {len(data)} items to {output_path}")
+
+if __name__ == "__main__":
+    menu_items = scrape_menu()
+    save_to_txt(menu_items, OUTPUT_TXT)
+    print(f"Saved {len(menu_items)} items to {OUTPUT_TXT}")
