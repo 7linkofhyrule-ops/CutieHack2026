@@ -7,7 +7,8 @@ meal = ""
 taste_profile = "0-2-7-italian-Lunch-"
 options=[]
 biggest=0
-time = 0
+location = ""
+menu="11-21-2026"
 
 
 
@@ -36,19 +37,25 @@ def Taste_Checker(taste, food_data,biggest):
             elif i ==5:
                 if meal == temp_check:
                     points+=10
+            
             temp_check = ""
     if points >= biggest:
+        options.insert(0, location)
         options.insert(0, food)
         options.insert(0, points)
         biggest = points
     else:
        options.append(points)
        options.append(food)
+       options.append(location)
     return biggest
     
-    
+#print("enter the date in the folowwing format: mm-dd-yyyy")  
+#menu = input()
 
-with open("formatted_menu_items.txt", "r", encoding="utf8") as file:
+#USE THIS TO PLUG IN MENU TXT
+menu+= "-MENU.txt"
+with open(menu, "r", encoding="utf8") as file:
     content = file.read()
     temp_string = ""
     count = 0
@@ -69,17 +76,23 @@ with open("formatted_menu_items.txt", "r", encoding="utf8") as file:
                 cuisine = temp_string
             elif count ==5 :
                 meal = temp_string
+            elif count ==6:
+                location = temp_string
+
             temp_string = ""
             count += 1
         else:
             temp_string = ""
             biggest = Taste_Checker(taste_profile, temp_string, biggest)
             count = 0
-  '''          
+    '''      
     print("I would reccomend: ")
     for i, item in enumerate(options):
         if isinstance(item, int):
           if item >= biggest:
-              print(options[i+1])
+              if options[i+2] == 'G':
+                print(options[i+1], "at Glascow")
+              elif options[i+2] == 'L':
+                  print(options[i+1], "at Lothian")
                '''
         
