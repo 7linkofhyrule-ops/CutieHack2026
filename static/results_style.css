@@ -1,0 +1,356 @@
+
+/* UCR Dining Finder - Results Page */
+
+:root {
+  --blue: #073ea6;
+  --dark-blue: #09275f;
+  --gold: #ffb91e;
+  --page: #edf2fb;
+  --ink: #172544;
+  --muted: #61708e;
+  --line: #ccd7ec;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: 'Bricolage Grotesque', Arial, sans-serif;
+}
+
+.wrap {
+  width: min(920px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+a {
+  color: inherit;
+}
+
+/* Header */
+
+.hero {
+  background: var(--blue);
+  color: white;
+  border-bottom: 9px solid var(--gold);
+  padding: 12px 0 125px;
+}
+
+.brand {
+  display: inline-block;
+  color: var(--gold);
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 21px;
+}
+
+.hero-content {
+  padding: 45px 0 0;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #ffca48;
+  font-weight: 800;
+}
+
+h1 {
+  font-size: clamp(40px, 6.5vw, 70px);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  margin: 10px 0 20px;
+  font-weight: 800;
+}
+
+.subtitle {
+  max-width: 690px;
+  font-size: clamp(17px, 2.2vw, 23px);
+  color: #dbe5fa;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Main results card */
+
+.main-content {
+  position: relative;
+  margin-top: -70px;
+  padding-bottom: 65px;
+}
+
+.panel {
+  background: white;
+  border: 3px solid var(--blue);
+  border-radius: 22px;
+  padding: clamp(23px, 4vw, 39px);
+  box-shadow: 12px 12px 0 var(--dark-blue);
+}
+
+.panel-heading,
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.section-kicker {
+  color: var(--blue);
+  letter-spacing: 1.6px;
+  font-size: 12px;
+  font-weight: 800;
+  margin: 0 0 7px;
+}
+
+h2 {
+  font-size: clamp(27px, 3.5vw, 36px);
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.pill {
+  background: #fff5d9;
+  border: 2px solid #ffca5c;
+  color: #624300;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 30px;
+  padding: 10px 14px;
+}
+
+/* Taste scores */
+
+.taste-grid {
+  display: grid;
+  gap: 15px;
+  margin-top: 27px;
+}
+
+.taste-card {
+  background: #f7f9fd;
+  border: 2px solid #d6e0f0;
+  border-radius: 16px;
+  padding: 19px 20px;
+}
+
+.taste-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.taste-top strong {
+  background: var(--gold);
+  border: 2px solid var(--dark-blue);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 19px;
+  min-width: 74px;
+  text-align: center;
+}
+
+.meter {
+  width: 100%;
+  height: 14px;
+  border-radius: 30px;
+  background: #cdd7ea;
+  overflow: hidden;
+  margin-top: 17px;
+}
+
+.meter-fill {
+  height: 100%;
+  background: var(--blue);
+  border-radius: inherit;
+}
+
+/* Cuisine tags */
+
+h3 {
+  font-size: 20px;
+  margin: 27px 0 13px;
+}
+
+.cuisine-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cuisine-chip {
+  background: white;
+  border: 2px solid var(--line);
+  border-radius: 28px;
+  padding: 10px 16px;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Food recommendations */
+
+.recommendations {
+  padding-top: 54px;
+}
+
+.match-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+  gap: 19px;
+  margin-top: 24px;
+}
+
+.match-card,
+.empty-state {
+  background: white;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.match-card {
+  box-shadow: 5px 5px 0 #d5def1;
+}
+
+.match-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff0c5;
+  border-radius: 17px;
+  font-size: 30px;
+}
+
+.match-label {
+  display: block;
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 18px;
+}
+
+.match-content h3 {
+  margin: 7px 0 10px;
+}
+
+.dish-detail {
+  margin: 6px 0;
+  font-weight: 700;
+  color: #405579;
+}
+
+.dish-description {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Empty recommendation state */
+
+.empty-state {
+  text-align: center;
+  margin-top: 24px;
+  padding: 45px 25px;
+}
+
+.empty-icon {
+  font-size: 42px;
+}
+
+.empty-state h3 {
+  margin: 12px 0;
+  font-size: 24px;
+}
+
+.empty-state p {
+  color: var(--muted);
+  max-width: 525px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Navigation buttons */
+
+.actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.button-primary,
+.button-secondary {
+  text-decoration: none;
+  text-align: center;
+  padding: 17px 28px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 15px;
+  transition: transform 0.15s ease;
+}
+
+.button-primary:hover,
+.button-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary {
+  color: var(--dark-blue);
+  background: var(--gold);
+  border: 3px solid var(--dark-blue);
+  box-shadow: 4px 4px 0 #f5a900;
+}
+
+.button-secondary {
+  color: var(--blue);
+  background: white;
+  border: 3px solid var(--line);
+}
+
+/* Footer */
+
+.footer {
+  border-top: 1px solid #d3dced;
+  color: var(--muted);
+  padding: 24px 0;
+  font-weight: 600;
+}
+
+/* Mobile layout */
+
+@media (max-width: 600px) {
+  .hero {
+    padding-bottom: 110px;
+  }
+
+  .panel {
+    box-shadow: 7px 7px 0 var(--dark-blue);
+  }
+
+  .pill {
+    font-size: 12px;
+  }
+
+  .taste-top {
+    font-size: 16px;
+  }
+
+  .actions a {
+    flex: 1 1 100%;
+  }
+}

@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Your Matches | UCR Dining Finder</title>
+
+  <!-- Same font as the quiz -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Connect the results stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='results_style.css') }}">
+</head>
+
+<body>
+
+  <!-- Blue header -->
+  <header class="hero">
+    <div class="wrap">
+      <a class="brand" href="{{ url_for('home') }}">
+        UCR Dining Finder
+      </a>
+
+      <div class="hero-content">
+        <p class="eyebrow">YOUR FLAVOR PROFILE</p>
+        <h1>Your food matches</h1>
+        <p class="subtitle">
+          Made for your cravings. Here's what your
+          taste quiz tells us.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main-content">
+
+    <!-- Taste profile card -->
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="section-kicker">YOUR RESULTS</p>
+          <h2>Your taste profile</h2>
+        </div>
+
+        <span class="pill">✨ Personalized for you</span>
+      </div>
+
+      <!-- Spicy score -->
+      <div class="taste-grid">
+
+        <div class="taste-card">
+          <div class="taste-top">
+            <span>🌶️ Spicy</span>
+            <strong>{{ spicy | default(5) }}/10</strong>
+          </div>
+
+          <div class="meter">
+            <div class="meter-fill"
+                 style="width: {{ spicy | default(5) | int * 10 }}%">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sweet score -->
+        <div class="taste-card">
+          <div class="taste-top">
+            <span>🍰 Sweet</span>
+            <strong>{{ sweet | default(5) }}/10</strong>
+          </div>
+
+          <div class="meter">
+            <div class="meter-fill"
+                 style="width: {{ sweet | default(5) | int * 10 }}%">
+            </div>
+          </div>
+        </div>
+
+        <!-- Savory score -->
+        <div class="taste-card">
+          <div class="taste-top">
+            <span>🥩 Savory</span>
+            <strong>{{ savory | default(5) }}/10</strong>
+          </div>
+
+          <div class="meter">
+            <div class="meter-fill"
+                 style="width: {{ savory | default(5) | int * 10 }}%">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Selected cuisines -->
+      <h3>Favorite cuisines</h3>
+
+      <div class="cuisine-list">
+
+        {% if cuisines %}
+          {% for cuisine in cuisines %}
+            <span class="cuisine-chip">
+              {{ cuisine }}
+            </span>
+          {% endfor %}
+        {% else %}
+          <span class="muted">
+            No cuisines selected yet.
+          </span>
+        {% endif %}
+
+      </div>
+    </section>
+
+    <!-- Food recommendations -->
+    <section class="recommendations">
+
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">HANDPICKED FOR YOU</p>
+          <h2>Dishes to try</h2>
+        </div>
+      </div>
+
+      {% if matches is defined and matches %}
+
+        <div class="match-grid">
+
+          {% for dish in matches %}
+            <article class="match-card">
+
+              <div class="match-icon">🍽️</div>
+
+              <div class="match-content">
+                <span class="match-label">
+                  YOUR MATCH {{ loop.index }}
+                </span>
+
+                <h3>{{ dish.name }}</h3>
+
+                {% if dish.cuisine is defined and dish.cuisine %}
+                  <p class="dish-detail">
+                    {{ dish.cuisine }}
+                  </p>
+                {% endif %}
+
+                {% if dish.location is defined and dish.location %}
+                  <p class="dish-detail">
+                    📍 {{ dish.location }}
+                  </p>
+                {% endif %}
+
+                {% if dish.description is defined and dish.description %}
+                  <p class="dish-description">
+                    {{ dish.description }}
+                  </p>
+                {% endif %}
+              </div>
+
+            </article>
+          {% endfor %}
+
+        </div>
+
+      {% else %}
+
+        <!-- Appears until recommendations are connected -->
+        <div class="empty-state">
+          <span class="empty-icon">🍴</span>
+
+          <h3>Your matches are coming soon!</h3>
+
+          <p>
+            Your preferences are ready.
+            Once the recommendation algorithm
+            is connected, your dining hall
+            matches will appear here.
+          </p>
+        </div>
+
+      {% endif %}
+
+    </section>
+
+    <!-- Navigation buttons -->
+    <div class="actions">
+
+      <a href="{{ url_for('quiz') }}"
+         class="button-primary">
+        ↻ Retake the quiz
+      </a>
+
+      <a href="{{ url_for('home') }}"
+         class="button-secondary">
+        Back to home
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      Built at CutieHack 2026 💛
+    </div>
+  </footer>
+
+</body>
+</html>
