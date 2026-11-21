@@ -1,71 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Welcome | UCR Dining Finder</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
 </head>
-
 <body>
 
-    <header class="site-header">
-        <div class="wrap topbar">
+    <header class="navbar">
+        <div class="container nav-content">
             <a href="/" class="logo">UCR Dining Finder</a>
-            <span class="tag">CutieHack 2026</span>
+            <span class="hackathon">CutieHack 2026</span>
         </div>
     </header>
 
     <main>
-        <section class="blue-hero">
-            <div class="wrap hero-inner">
+        <section class="hero">
+            <div class="container hero-grid">
 
                 <div>
-                    <p class="eyebrow">
-                        WELCOME TO YOUR DINING COMPANION
+                    <p class="eyebrow">WELCOME TO YOUR DINING COMPANION</p>
+
+                    <h1>Find food that <span>fits your flavor.</span></h1>
+
+                    <p class="hero-description">
+                        Discover what to eat at Glasgow and Lothian,
+                        matched to the tastes you actually enjoy.
                     </p>
 
-                    <h1>
-                        Find food that<br>
-                        <em>fits your flavor.</em>
-                    </h1>
-
-                    <p class="intro">
-                        Discover what to eat at Glasgow and
-                        Lothian, matched to the tastes you
-                        actually enjoy.
-                    </p>
-
-                    <a href="{{ url_for('quiz') }}"
-                       class="primary-button">
+                    <a href="{{ url_for('quiz') }}" class="main-button">
                         Take your flavor quiz →
                     </a>
 
-                    <p class="hint">
-                        Just once to get started.
-                        You can update your tastes later.
+                    <p class="small-text">
+                        Just once to get started. You can update your tastes later.
                     </p>
                 </div>
 
-                <div class="feature-card">
-                    <span class="big-emoji">🍽️</span>
-
+                <div class="preview-card">
+                    <div class="food-emoji">🍽️</div>
                     <h2>Your daily menu, your way.</h2>
-
                     <p>
-                        Set your spicy, sweet and savory
-                        preferences, choose cuisines,
-                        and explore breakfast, lunch
-                        and dinner.
+                        Set your spicy, sweet and savory preferences, choose
+                        cuisines, and explore breakfast, lunch and dinner.
                     </p>
-
-                    <div class="feature-chips">
+                    <div class="taste-tags">
                         <span>🌶️ Spicy</span>
                         <span>🍰 Sweet</span>
                         <span>🥘 Savory</span>
@@ -75,44 +59,32 @@
             </div>
         </section>
 
-        <section class="wrap steps">
-
+        <section class="container steps">
             <h2>How it works</h2>
 
-            <div class="step-grid">
-
-                <article>
-                    <b>01</b>
+            <div class="steps-grid">
+                <article class="step-card">
+                    <span class="step-number">01</span>
                     <h3>Take the quiz</h3>
-                    <p>
-                        Tell us your favorite flavors
-                        and cuisines.
-                    </p>
+                    <p>Tell us your favorite flavors and cuisines.</p>
                 </article>
 
-                <article>
-                    <b>02</b>
+                <article class="step-card">
+                    <span class="step-number">02</span>
                     <h3>Save your profile</h3>
-                    <p>
-                        We'll remember your preferences
-                        on this browser.
-                    </p>
+                    <p>We'll remember your preferences on this browser.</p>
                 </article>
 
-                <article>
-                    <b>03</b>
+                <article class="step-card">
+                    <span class="step-number">03</span>
                     <h3>Find today's food</h3>
-                    <p>
-                        Browse personalized meals
-                        for Glasgow and Lothian.
-                    </p>
+                    <p>Browse personalized meals for Glasgow and Lothian.</p>
                 </article>
-
             </div>
         </section>
     </main>
 
-    <footer class="wrap footer">
+    <footer class="footer">
         Built at CutieHack 2026 · UCR Dining Finder
     </footer>
 

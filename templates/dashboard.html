@@ -70,7 +70,7 @@
                         TODAY'S MENU
                     </p>
 
-                    <h2>{{ today }}</h2>
+                    <h2>{{ today_label }}</h2>
                 </div>
 
                 <span class="personalized-badge">
@@ -133,9 +133,8 @@
 
                         <h3>{{ dish.name }}</h3>
 
-                        <p>
-                            {{ dish.cuisine if dish.cuisine else "Cuisine not labeled" }}
-                        </p>
+                        <p>{{ dish.cuisine|title if dish.cuisine else "Cuisine not labeled" }}</p>
+                        <span class="match-badge">{{ dish.match }}% match</span>
 
                     </div>
 
@@ -215,7 +214,7 @@
 
                 {% for cuisine in profile.cuisines %}
 
-                    <span>{{ cuisine }}</span>
+                    <span>{{ cuisine|title }}</span>
 
                 {% else %}
 

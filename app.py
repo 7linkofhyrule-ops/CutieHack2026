@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
+from home_feature import homepage_response, init_home_db
 import init_db as db
 
 app = Flask(__name__)
@@ -16,14 +17,22 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 CUISINES = {"mediterranean", "asian", "indian", "american", "hispanic", "african", "italian"}
 
 db.init_user_db()
+db.init_user_db()
+init_home_db()
 
+
+# app.py: add anywhere below `app = Flask(__name__)`
+@app.after_request
+def no_cache(response):
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 def current_user():
     """The user this browser belongs to, or None if we haven't seen them take the quiz."""
     return db.get_user_by_token(session.get("user_token"))
 
 def get_or_create_user():
-    """Return this visitor's user record, creating one if needed."""
+    session.permanent = True
     token = session.get("user_token")
     user = db.get_user_by_token(token) if token else None
 
@@ -37,7 +46,7 @@ def get_or_create_user():
 # Home Page
 @app.route("/")
 def home():
-    return render_template("welcome.html")
+    return homepage_response()
 
 #Results Page
 @app.route("/results", methods=["POST"])

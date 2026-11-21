@@ -485,3 +485,18 @@ h1 span {
         max-width: 500px;
     }
 }
+.food-icon { flex-shrink: 0; }
+.food-information { flex: 1; min-width: 0; }
+
+.match-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 11px;
+    background: #e3ecff;
+    color: var(--ucr-blue);
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.step-number { display: block; margin-bottom: 8px; }
