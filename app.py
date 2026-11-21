@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -20,6 +20,9 @@ def results():
     print("Sweet:", sweet)
     print("Savory:", savory)
     print("Cuisines:", cuisines)
+
+    if len(cuisines) < 2:
+        return redirect("/quiz")
 
     return render_template(
         "results.html",
