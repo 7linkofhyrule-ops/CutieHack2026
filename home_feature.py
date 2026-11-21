@@ -1,42 +1,20 @@
-import sqlite3
-from datetime import date
-from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
-from flask import render_template, request, session, redirect, url_for
+from flask import redirect, render_template, request, session, url_for
 
+import algorithm
 import init_db as db
 
+LA = ZoneInfo("America/Los_Angeles")
 
-BASE = Path(__file__).resolve().parent
-DB_PATH = BASE / "instance" / "dining_finder.db"
-
-MEALS = ("Breakfast", "Lunch", "Dinner")
-MAX_SCORE = 42  # 3 tastes x 10 points + 12 cuisine bonus
+MEALS = algorithm.MEALS          # ("Breakfast", "Lunch", "Dinner")
+DISHES_SHOWN = 8
 
 
-def connection():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def init_home_db():
-    """Menu table only. Quiz answers live in users.db (init_db.py)."""
-    with connection() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS menu_items (
-                dining_hall TEXT,
-                menu_date TEXT,
-                meal TEXT,
-                name TEXT,
-                cuisine TEXT,
-                spicy INTEGER DEFAULT 5,
-                sweet INTEGER DEFAULT 5,
-                savory INTEGER DEFAULT 5,
-                PRIMARY KEY (dining_hall, menu_date, meal, name)
-            )
-        """)
+def today_la():
+    """Today's date in Los Angeles, no matter where the server runs."""
+    return datetime.now(LA).date()
 
 
 def get_profile():
@@ -49,6 +27,8 @@ def get_profile():
     if result is None:
         return None
 
+    db.touch_user(user["id"])   # records last_seen
+
     return {
         "spicy": result["spice"],
         "sweet": result["sweet"],
@@ -57,46 +37,49 @@ def get_profile():
     }
 
 
-def ranked_menu(menu_date, meal, profile):
-    with connection() as conn:
-        dishes = conn.execute("""
-            SELECT * FROM menu_items
-            WHERE menu_date = ?
-              AND meal = ?
-              AND dining_hall IN ('Glasgow', 'Lothian')
-        """, (menu_date, meal)).fetchall()
+def menu_for(day, meal, profile):
+    """Return (dishes, empty_title, empty_message) for one day + meal."""
+    path = algorithm.menu_path_for(day)
 
-    preferred = {c.lower() for c in profile["cuisines"]}
-    ranked = []
+    # The algorithm reads the quiz in its own key names (spice, not spicy)
+    quiz = {
+        "spice": profile["spicy"],
+        "sweet": profile["sweet"],
+        "savory": profile["savory"],
+        "cuisines": profile["cuisines"],
+    }
 
-    for dish in dishes:
-        score = 0
-        for taste in ("spicy", "sweet", "savory"):
-            score += 10 - abs(profile[taste] - (dish[taste] or 5))
+    try:
+        dishes = algorithm.recommend(path, quiz, meal, limit=DISHES_SHOWN)
+    except FileNotFoundError:
+        return [], "Today's menu isn't available yet", (
+            "We don't have a Glasgow or Lothian menu loaded for today. "
+            "Check the official dining menus in the meantime."
+        )
 
-        if (dish["cuisine"] or "").lower() in preferred:
-            score += 12
+    if not dishes:
+        return [], f"No {meal.lower()} menu today", (
+            f"Glasgow and Lothian aren't listing any {meal.lower()} items for today. "
+            "Try another meal above."
+        )
 
-        ranked.append({
-            **dict(dish),
-            "score": score,
-            "match": round(score / MAX_SCORE * 100),
-        })
-
-    ranked.sort(key=lambda food: (-food["score"], food["name"]))
-    return ranked[:8]
+    return dishes, "", ""
 
 
 def homepage_response():
     profile = get_profile()
-    today = date.today()
 
+    # New visitors (or anyone who hasn't finished the quiz) see the welcome page + quiz button
     if profile is None:
-        return redirect(url_for("quiz"))
+        return render_template("welcome.html")
+
+    today = today_la()
 
     meal = request.args.get("meal", "Lunch").title()
     if meal not in MEALS:
         meal = "Lunch"
+
+    dishes, empty_title, empty_message = menu_for(today, meal, profile)
 
     return render_template(
         "dashboard.html",
@@ -104,5 +87,7 @@ def homepage_response():
         meal=meal,
         meals=MEALS,
         profile=profile,
-        dishes=ranked_menu(today.isoformat(), meal, profile),
+        dishes=dishes,
+        empty_title=empty_title,
+        empty_message=empty_message,
     )

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -150,14 +149,9 @@
 
                 <div class="empty-emoji">🍲</div>
 
-                <h3>No menu items available yet</h3>
+                <h3>{{ empty_title or 'No menu items available yet' }}</h3>
 
-                <p>
-                    Once Glasgow and Lothian menus
-                    are imported into our database,
-                    your recommended dishes will
-                    appear here.
-                </p>
+                <p>{{ empty_message }}</p>
 
                 <a href="https://dining.ucr.edu/menus"
                    target="_blank"

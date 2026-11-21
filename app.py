@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
-from home_feature import homepage_response, init_home_db
+from home_feature import homepage_response
 import init_db as db
 
 app = Flask(__name__)
@@ -17,8 +17,6 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 CUISINES = {"mediterranean", "asian", "indian", "american", "hispanic", "african", "italian"}
 
 db.init_user_db()
-db.init_user_db()
-init_home_db()
 
 
 # app.py: add anywhere below `app = Flask(__name__)`
