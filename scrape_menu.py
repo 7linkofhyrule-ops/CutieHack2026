@@ -1,4 +1,4 @@
-from pathlib import Path
+'''from pathlib import Path
 from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
@@ -90,3 +90,4 @@ if __name__ == "__main__":
     menu_items = scrape_menu()
     save_to_txt(menu_items, OUTPUT_TXT)
     print(f"Saved {len(menu_items)} items to {OUTPUT_TXT}")
+'''
