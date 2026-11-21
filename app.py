@@ -42,10 +42,10 @@ def home():
     db.touch_user(user["id"])
 
     return render_template(
-        "home.html",
-        returning=prefs is not None,
-        prefs=prefs,
-    )
+      "welcome.html",
+      returning=prefs is not None,
+      prefs=prefs,
+)
 
 #Results Page
 @app.route("/results", methods=["POST"])
