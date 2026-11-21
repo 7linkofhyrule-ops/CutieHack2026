@@ -37,15 +37,7 @@ def get_or_create_user():
 # Home Page
 @app.route("/")
 def home():
-    user = get_or_create_user()
-    prefs = db.get_latest_result(user["id"])
-    db.touch_user(user["id"])
-
-    return render_template(
-      "welcome.html",
-      returning=prefs is not None,
-      prefs=prefs,
-)
+    return render_template("welcome.html")
 
 #Results Page
 @app.route("/results", methods=["POST"])
