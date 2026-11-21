@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flavor quiz | UCR Dining Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/quiz_style.css">
+  <!-- <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}" type="text/css"> -->
+</head>
+
+<body>
+  <header class="band">
+    <div class="wrap">
+      <p class="site-name"><a href="/">UCR Dining Finder</a></p>
+      <h1>Find your flavor</h1>
+      <p class="lead">Rate three tastes and pick your favorite cuisines. We’ll match you with dishes at the dining halls.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Change action to match your Flask route that handles the quiz -->
+    <form class="quiz" id="quiz" action="/results" method="get">
+
+      <div>
+        <div class="slider-head">
+          <label for="spice"><span class="icon" aria-hidden="true">🌶️</span>How much do you like spicy food?</label>
+          <output class="score" id="spice-out" for="spice">5</output>
+        </div>
+        <input id="spice" name="spice" type="range" min="1" max="10" step="1" value="5">
+        <div class="scale"><span>Not at all</span><span>Love it</span></div>
+      </div>
+
+      <div>
+        <div class="slider-head">
+          <label for="sweet"><span class="icon" aria-hidden="true">🍰</span>How much do you like sweet flavors?</label>
+          <output class="score" id="sweet-out" for="sweet">5</output>
+        </div>
+        <input id="sweet" name="sweet" type="range" min="1" max="10" step="1" value="5">
+        <div class="scale"><span>Not at all</span><span>Love it</span></div>
+      </div>
+
+      <div>
+        <div class="slider-head">
+          <label for="savory"><span class="icon" aria-hidden="true">🥩</span>How much do you like savory flavors?</label>
+          <output class="score" id="savory-out" for="savory">5</output>
+        </div>
+        <input id="savory" name="savory" type="range" min="1" max="10" step="1" value="5">
+        <div class="scale"><span>Not at all</span><span>Love it</span></div>
+      </div>
+
+      <fieldset>
+        <legend>Which cuisines do you like?</legend>
+        <p class="hint">Pick at least two.</p>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="cuisine" value="mediterranean"><span>🫒 Mediterranean</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="asian"><span>🥢 Asian</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="indian"><span>🍛 Indian</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="american"><span>🍔 American</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="hispanic"><span>🌮 Hispanic</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="african"><span>🍲 African</span></label>
+          <label class="chip"><input type="checkbox" name="cuisine" value="italian"><span>🍝 Italian</span></label>
+        </div>
+        <p class="form-error" id="cuisine-error" role="alert" hidden>Pick at least two cuisines to continue.</p>
+      </fieldset>
+
+      <button type="submit">See my matches</button>
+    </form>
+  </main>
+
+  <footer class="wrap">
+    <p>Built at CutieHack 2026</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("quiz");
+    const error = document.getElementById("cuisine-error");
+
+    function checkedCount() {
+      return form.querySelectorAll('input[name="cuisine"]:checked').length;
+    }
+
+    // Show the number next to each slider and fill the track up to the thumb
+    form.querySelectorAll('input[type="range"]').forEach(function (slider) {
+      const out = document.getElementById(slider.id + "-out");
+      function update() {
+        out.textContent = slider.value;
+        const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+        slider.style.background =
+          "linear-gradient(to right, #003DA5 " + pct + "%, #CDD7EA " + pct + "%)";
+      }
+      slider.addEventListener("input", update);
+      update();
+    });
+
+    // Require at least two cuisines
+    form.addEventListener("submit", function (e) {
+      if (checkedCount() < 2) {
+        e.preventDefault();
+        error.hidden = false;
+      }
+    });
+
+    form.addEventListener("change", function () {
+      if (checkedCount() >= 2) error.hidden = true;
+    });
+  </script>
+</body>
+</html>
