@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -10,7 +10,25 @@ def home():
 #Results Page
 @app.route("/results")
 def results():
-    return render_template("results.html")
+    spicy = request.args.get("spice", default=5, type = int)
+    sweet = request.args.get("sweet", default=5, type = int)
+    savory = request.args.get("savory", default=5,type = int)
+
+    cuisines = request.args.getlist("cuisine")
+
+    print("Spicy:", spicy)
+    print("Sweet:", sweet)
+    print("Savory:", savory)
+    print("Cuisines:", cuisines)
+
+    return render_template(
+        "results.html",
+        spicy=spicy,
+        sweet=sweet,
+        savory=savory,
+        cuisines=cuisines
+        
+    )
 
 #Quiz Page
 @app.route("/quiz")
