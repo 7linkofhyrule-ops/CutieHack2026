@@ -1,0 +1,487 @@
+
+/* UCR Dining Finder Homepage Styling */
+
+:root {
+    --ucr-blue: #073ea6;
+    --dark-blue: #09275f;
+    --gold: #ffb91e;
+    --background: #edf2fb;
+    --text: #172544;
+    --muted: #61708e;
+    --border: #ccd7ec;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Bricolage Grotesque', Arial, sans-serif;
+}
+
+.container {
+    width: min(1080px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* Navigation */
+
+.navbar {
+    background: var(--ucr-blue);
+    color: white;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 75px;
+    gap: 15px;
+}
+
+.logo {
+    color: var(--gold);
+    font-size: 22px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.hackathon {
+    font-size: 13px;
+    background: var(--gold);
+    color: var(--dark-blue);
+    padding: 9px 15px;
+    border-radius: 30px;
+    font-weight: 800;
+}
+
+.profile-link {
+    color: white;
+    border: 2px solid #8aabe7;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: 700;
+}
+
+/* Hero section */
+
+.hero {
+    background: var(--ucr-blue);
+    color: white;
+    border-bottom: 9px solid var(--gold);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 45px;
+    align-items: center;
+    padding: 60px 0 90px;
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+h1 {
+    font-size: clamp(42px, 6vw, 74px);
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+    margin: 16px 0 22px;
+    font-weight: 800;
+}
+
+h1 span {
+    color: var(--gold);
+}
+
+.hero-description {
+    font-size: 21px;
+    line-height: 1.6;
+    color: #dbe5fa;
+    max-width: 650px;
+}
+
+/* Buttons */
+
+.main-button,
+.retake-button {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark-blue);
+    border: 3px solid var(--dark-blue);
+    border-radius: 16px;
+    padding: 17px 28px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 800;
+    box-shadow: 5px 5px 0 #f4a900;
+    transition: transform 0.15s ease;
+}
+
+.main-button {
+    margin-top: 15px;
+}
+
+.main-button:hover,
+.retake-button:hover {
+    transform: translateY(-3px);
+}
+
+.small-text {
+    font-size: 13px;
+    color: #dbe5fa;
+    margin-top: 24px;
+}
+
+/* Welcome preview card */
+
+.preview-card {
+    background: white;
+    color: var(--text);
+    padding: 35px;
+    border: 3px solid var(--dark-blue);
+    border-radius: 25px;
+    box-shadow: 12px 12px 0 var(--dark-blue);
+}
+
+.food-emoji {
+    font-size: 55px;
+}
+
+.preview-card h2 {
+    font-size: 30px;
+    letter-spacing: -0.04em;
+}
+
+.preview-card p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.taste-tags,
+.cuisine-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.taste-tags span,
+.cuisine-tags span {
+    background: #f4f7fc;
+    border: 2px solid var(--border);
+    border-radius: 30px;
+    padding: 10px 15px;
+    font-weight: 700;
+}
+
+/* How it works */
+
+.steps {
+    padding: 65px 0;
+}
+
+.steps h2 {
+    font-size: 36px;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.step-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+}
+
+.step-number {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ucr-blue);
+}
+
+.step-card h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.step-card p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* Dashboard hero */
+
+.dashboard-hero {
+    padding: 55px 0 120px;
+}
+
+.dashboard-hero h1 {
+    font-size: clamp(42px, 6vw, 65px);
+}
+
+/* Dashboard layout */
+
+.dashboard-content {
+    position: relative;
+    margin-top: -70px;
+    padding-bottom: 60px;
+}
+
+.dashboard-card,
+.profile-card {
+    background: white;
+    border: 3px solid var(--ucr-blue);
+    border-radius: 25px;
+    padding: 38px;
+    box-shadow: 10px 10px 0 var(--dark-blue);
+}
+
+.card-header,
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.section-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ucr-blue);
+    letter-spacing: 2px;
+}
+
+.card-header h2,
+.profile-header h2 {
+    font-size: 34px;
+    letter-spacing: -0.04em;
+    margin: 8px 0;
+}
+
+.personalized-badge {
+    background: #fff2c6;
+    color: var(--dark-blue);
+    border-radius: 30px;
+    padding: 10px 15px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* Meal selection */
+
+.meal-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.meal-tab {
+    text-align: center;
+    padding: 17px 12px;
+    border: 2px solid var(--border);
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 800;
+}
+
+.meal-tab:hover {
+    background: #f5f8fd;
+}
+
+.meal-tab.active {
+    background: var(--gold);
+    border-color: var(--dark-blue);
+    box-shadow: 4px 4px 0 var(--dark-blue);
+}
+
+.section-title {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.section-description {
+    color: var(--muted);
+    margin-top: 0;
+}
+
+/* Food cards */
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.food-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.food-icon {
+    font-size: 30px;
+    background: #fff1c8;
+    padding: 13px;
+    border-radius: 15px;
+}
+
+.food-information h3 {
+    font-size: 21px;
+    margin: 8px 0;
+}
+
+.food-information p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.dining-hall {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ucr-blue);
+    text-transform: uppercase;
+}
+
+/* Empty food database */
+
+.empty-state {
+    text-align: center;
+    padding: 50px 25px;
+    border: 2px dashed var(--border);
+    background: #f8faff;
+    border-radius: 20px;
+    margin-top: 25px;
+}
+
+.empty-emoji {
+    font-size: 50px;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+}
+
+.empty-state p {
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 20px;
+}
+
+.empty-state a {
+    color: var(--ucr-blue);
+    font-weight: 800;
+}
+
+/* Profile section */
+
+.profile-card {
+    margin-top: 35px;
+    border-color: var(--border);
+    box-shadow: 6px 6px 0 #d5def1;
+}
+
+.profile-avatar {
+    font-size: 42px;
+}
+
+.profile-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.stat {
+    background: #f5f8fc;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    font-weight: 700;
+}
+
+.stat strong {
+    color: var(--ucr-blue);
+    margin-left: 8px;
+}
+
+.profile-card h3 {
+    font-size: 20px;
+}
+
+.retake-button {
+    margin-top: 28px;
+}
+
+.profile-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 22px;
+}
+
+/* Footer */
+
+.footer {
+    text-align: center;
+    padding: 28px;
+    font-size: 14px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+}
+
+/* Mobile adjustments */
+
+@media (max-width: 750px) {
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+    }
+
+    .steps-grid,
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-card,
+    .profile-card {
+        padding: 23px;
+    }
+
+    .meal-tabs {
+        gap: 6px;
+    }
+
+    .meal-tab {
+        font-size: 14px;
+        padding: 14px 5px;
+    }
+
+    .preview-card {
+        max-width: 500px;
+    }
+}
