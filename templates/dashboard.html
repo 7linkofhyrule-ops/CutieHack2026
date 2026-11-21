@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Dashboard | UCR Dining Finder</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='home_style.css') }}">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="/" class="logo">
+                UCR Dining Finder
+            </a>
+
+            <a href="#profile" class="profile-link">
+                👤 My Profile
+            </a>
+
+        </div>
+
+    </header>
+
+    <section class="hero dashboard-hero">
+
+        <div class="container">
+
+            <p class="eyebrow">
+                YOUR PERSONALIZED DINING GUIDE
+            </p>
+
+            <h1>
+                What's on the
+                <span>menu today?</span>
+            </h1>
+
+            <p class="hero-description">
+                Discover Glasgow and Lothian meals
+                picked for your personal tastes.
+            </p>
+
+        </div>
+
+    </section>
+
+    <main class="container dashboard-content">
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+                    <p class="section-label">
+                        TODAY'S MENU
+                    </p>
+
+                    <h2>{{ today }}</h2>
+                </div>
+
+                <span class="personalized-badge">
+                    ✨ Personalized for you
+                </span>
+
+            </div>
+
+            <!-- Breakfast, Lunch, Dinner -->
+
+            <div class="meal-tabs">
+
+                {% for choice in meals %}
+
+                <a href="{{ url_for('home', meal=choice) }}"
+                   class="meal-tab {% if choice == meal %}active{% endif %}">
+
+                    {% if choice == "Breakfast" %}
+                        ☀️
+                    {% elif choice == "Lunch" %}
+                        🥪
+                    {% else %}
+                        🌙
+                    {% endif %}
+
+                    {{ choice }}
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+            <h3 class="section-title">
+                Your {{ meal }} Matches
+            </h3>
+
+            <p class="section-description">
+                Based on your flavor preferences
+                and selected cuisines.
+            </p>
+
+            <!-- Actual food recommendations -->
+
+            {% if dishes %}
+
+            <div class="food-grid">
+
+                {% for dish in dishes %}
+
+                <div class="food-card">
+
+                    <div class="food-icon">🍽️</div>
+
+                    <div class="food-information">
+
+                        <span class="dining-hall">
+                            {{ dish.dining_hall }}
+                        </span>
+
+                        <h3>{{ dish.name }}</h3>
+
+                        <p>
+                            {{ dish.cuisine if dish.cuisine else "Cuisine not labeled" }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-emoji">🍲</div>
+
+                <h3>No menu items available yet</h3>
+
+                <p>
+                    Once Glasgow and Lothian menus
+                    are imported into our database,
+                    your recommended dishes will
+                    appear here.
+                </p>
+
+                <a href="https://dining.ucr.edu/menus"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Check Official Dining Menus
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- Profile section -->
+
+        <section class="profile-card" id="profile">
+
+            <div class="profile-header">
+
+                <div>
+                    <p class="section-label">
+                        YOUR PROFILE
+                    </p>
+
+                    <h2>Your Flavor Preferences</h2>
+                </div>
+
+                <div class="profile-avatar">👤</div>
+
+            </div>
+
+            <div class="profile-stats">
+
+                <div class="stat">
+                    🌶️ Spicy
+                    <strong>{{ profile.spicy }}/10</strong>
+                </div>
+
+                <div class="stat">
+                    🍰 Sweet
+                    <strong>{{ profile.sweet }}/10</strong>
+                </div>
+
+                <div class="stat">
+                    🥘 Savory
+                    <strong>{{ profile.savory }}/10</strong>
+                </div>
+
+            </div>
+
+            <h3>Favorite Cuisines</h3>
+
+            <div class="cuisine-tags">
+
+                {% for cuisine in profile.cuisines %}
+
+                    <span>{{ cuisine }}</span>
+
+                {% else %}
+
+                    <span>No cuisines selected</span>
+
+                {% endfor %}
+
+            </div>
+
+            <a href="{{ url_for('quiz') }}"
+               class="retake-button">
+                ↻ Retake Quiz
+            </a>
+
+            <p class="profile-note">
+                Your preferences are saved in this browser.
+                You can update them whenever you'd like.
+            </p>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        Built at CutieHack 2026 💛
+    </footer>
+
+</body>
+</html>
