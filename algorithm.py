@@ -2,11 +2,12 @@ food = ""
 spice = 0
 sweet = 0
 savor = 0
-cuisine = "other"
-meal = "other"
-taste_profile = "1-2-7-italian-Lunch"
+cuisine = ""
+meal = ""
+taste_profile = "0-2-7-italian-Lunch"
 options=[]
 biggest=0
+
 
 
 
@@ -32,6 +33,10 @@ def Taste_Checker(taste, food_data,biggest):
             elif i == 4:
                 if temp_check == cuisine:
                     points+=1 
+            elif i ==5:
+                if meal == temp_check:
+                    points+=10
+                    # 10 to distinguish if we have it a the right time.
             temp_check = ""
     if points >= biggest:
         options.insert(0, food)
@@ -72,11 +77,10 @@ with open("formatted_menu_items.txt", "r", encoding="utf8") as file:
             biggest = Taste_Checker(taste_profile, temp_string, biggest)
             count = 0
             
-   ''' print("I would reccomend: ")
+    print("I would reccomend: ")
     for i, item in enumerate(options):
         if isinstance(item, int):
           if item >= biggest:
               print(options[i+1])
-              '''
               
         
