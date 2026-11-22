@@ -1,0 +1,16 @@
+{# Shared by dashboard.html and results.html. Usage:
+   {% from "_dietary.html" import dietary_tags %}  ...  {{ dietary_tags(dish) }}
+   Never says "safe": it only reports what the menu labels say, or that there is no info. #}
+{% macro dietary_tags(dish) %}
+<div class="diet-tags">
+  {% if dish.dietary_known %}
+    {% for label in dish.diet_labels %}<span class="diet-tag diet-good">{{ label }}</span>{% endfor %}
+    {% for label in dish.contains_labels %}<span class="diet-tag diet-contains">{{ label }}</span>{% endfor %}
+    {% if not dish.diet_labels and not dish.contains_labels %}
+      <span class="diet-tag diet-neutral">No dietary labels listed on the menu</span>
+    {% endif %}
+  {% else %}
+    <span class="diet-tag diet-unknown">Dietary info unavailable</span>
+  {% endif %}
+</div>
+{% endmacro %}

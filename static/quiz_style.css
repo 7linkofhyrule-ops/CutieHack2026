@@ -251,3 +251,63 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; }
     }
+
+    /* Section headings: preferences (ranking only) vs restrictions (hard rules) */
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 1.375rem;
+    }
+
+    .tag {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      border-radius: 999px;
+    }
+
+    .tag-soft { color: var(--blue-deep); background: #e3ecff; }
+    .tag-must { color: var(--white); background: #a31621; }
+
+    .section-head-must { border-bottom-color: #a31621; margin-top: 0.5rem; }
+
+    .must-intro { margin: -1rem 0 0; }
+    .restriction-group legend { margin-bottom: 0.5rem; }
+    .legend-note { font-weight: 400; color: var(--muted); font-size: 0.9375rem; }
+
+    /* Must-avoid chips are red when ticked, so they never look like a taste preference */
+    .chip.must:hover span { border-color: #a31621; }
+
+    .chip.must input:checked + span {
+      color: var(--white);
+      background: #a31621;
+      border-color: #a31621;
+    }
+
+    .chip.must input:focus-visible + span { outline-color: #a31621; }
+
+    .restriction-summary {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      font-size: 0.9375rem;
+      color: var(--muted);
+      background: var(--sky);
+      border-radius: 0.6rem;
+    }
+
+    .restriction-summary.active {
+      color: #7a0f18;
+      background: #fdecee;
+      border: 1px solid #e9a4aa;
+    }

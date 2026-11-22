@@ -29,3 +29,24 @@ const form = document.getElementById("quiz");
     form.addEventListener("change", function () {
       if (checkedCount() >= 2) error.hidden = true;
     });
+
+// Summarize the must-avoid choices so people can see exactly what will be enforced.
+// (These boxes are optional, so there is nothing to block on; the server validates the values.)
+const summary = document.getElementById("restriction-summary");
+
+function updateRestrictionSummary() {
+  const chosen = Array.from(form.querySelectorAll('input[name="restriction"]:checked'))
+    .map(function (box) { return box.nextElementSibling.textContent.trim(); });
+
+  if (chosen.length === 0) {
+    summary.textContent = "No restrictions selected: dishes won\u2019t be filtered for diet or allergens.";
+    summary.classList.remove("active");
+  } else {
+    summary.textContent = "Hard rules (" + chosen.length + "): " + chosen.join(", ") +
+      ". We\u2019ll hide any dish that conflicts with these or has no dietary info.";
+    summary.classList.add("active");
+  }
+}
+
+form.addEventListener("change", updateRestrictionSummary);
+updateRestrictionSummary();

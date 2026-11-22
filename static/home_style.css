@@ -500,3 +500,48 @@ h1 span {
 }
 
 .step-number { display: block; margin-bottom: 8px; }
+
+
+/* Dietary tags, notices and must-avoid chips */
+.diet-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+.diet-tag {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 30px;
+    border: 1.5px solid var(--border);
+}
+
+.diet-good     { background: #e3f6e8; border-color: #9fd6ad; color: #1c5b2b; }
+.diet-contains { background: #fff2c6; border-color: #f0cf72; color: #624300; }
+.diet-neutral  { background: #f4f7fc; color: var(--muted); }
+.diet-unknown  { background: #fdecee; border-color: #e9a4aa; color: #7a0f18; }
+
+.notice {
+    margin: 0 0 22px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.notice a { color: var(--ucr-blue); font-weight: 800; }
+.notice-info   { background: #eef3fb; border: 2px solid var(--border); }
+.notice-safety { background: #fdecee; border: 2px solid #e9a4aa; color: #5c0c13; }
+
+.hidden-note { margin-top: 20px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.must-label {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 3px 10px;
+    border-radius: 30px;
+    background: #a31621;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    vertical-align: middle;
+}
+
+.must-tags span { background: #fdecee; border-color: #e9a4aa; color: #7a0f18; }

@@ -1,1 +1,13 @@
-// Food-Spice-Sweet-Savor-Cuisine-Meal //
+// Menu record (one per ':'), file name MM-DD-YYYY-MENU.txt in txt4algo/ //
+// Food-Spice-Sweet-Savor-Cuisine-Meal-Location-Flags-: //
+//
+// Location: G = Glasgow, L = Lothian
+// Flags is OPTIONAL. Records without it (all older files) mean "dietary info unknown".
+//   Flags = legend codes joined by '+':  vegan vegetarian gluten_free  (diets)
+//           milk eggs fish shellfish tree_nuts peanuts wheat soy sesame  (the "Contains ..." icons)
+//   e.g.  Pad Thai Noodles-3-5-7-asian-Lunch-L-soy+peanuts+eggs-:
+//   none     -> the menu was checked and lists NO legend icons for the dish
+//   unknown  -> dietary info could not be read (same as leaving Flags out)
+// Never write 'none' unless the dish's icons were actually read; when in doubt use 'unknown'.
+//
+// Profile string passed to the algorithm: Spice-Sweet-Savor-Cuisine-Meal-[Restrictions-]

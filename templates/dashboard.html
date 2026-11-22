@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +20,8 @@
 </head>
 
 <body>
+
+    {% from "_dietary.html" import dietary_tags %}
 
     <header class="navbar">
 
@@ -109,8 +112,24 @@
 
             <p class="section-description">
                 Based on your flavor preferences
-                and selected cuisines.
+                and selected cuisines{% if restrictions %}, and filtered by your dietary needs{% endif %}.
             </p>
+
+            {% if not restrictions_asked %}
+            <div class="notice notice-info">
+                <strong>You haven't set dietary needs or allergens yet.</strong>
+                These matches aren't filtered for them.
+                <a href="{{ url_for('quiz') }}">Update your quiz</a> to add them.
+            </div>
+            {% elif restrictions %}
+            <div class="notice notice-safety">
+                <strong>Filtered by your must-avoid list:</strong>
+                {{ (diet_needs + allergens_avoided)|join(', ') }}.
+                Dishes that conflict, or that have no dietary info, are hidden.
+                This reflects the labels on the dining hall menu, so if you have a serious
+                allergy, confirm with dining staff before you eat.
+            </div>
+            {% endif %}
 
             <!-- Actual food recommendations -->
 
@@ -134,6 +153,7 @@
 
                         <p>{{ dish.cuisine|title if dish.cuisine else "Cuisine not labeled" }}</p>
                         <span class="match-badge">{{ dish.match }}% match</span>
+                        {{ dietary_tags(dish) }}
 
                     </div>
 
@@ -142,6 +162,13 @@
                 {% endfor %}
 
             </div>
+
+            {% if hidden_total %}
+            <p class="hidden-note">
+                🛡️ {{ hidden_total }} {{ 'dish was' if hidden_total == 1 else 'dishes were' }}
+                hidden for your safety: {{ hidden_summary }}.
+            </p>
+            {% endif %}
 
             {% else %}
 
@@ -217,6 +244,19 @@
                 {% endfor %}
 
             </div>
+
+            <h3>Dietary Needs &amp; Allergens <span class="must-label">Must avoid</span></h3>
+
+            {% if not restrictions_asked %}
+                <p class="profile-note">Not set yet.</p>
+            {% elif not restrictions %}
+                <p class="profile-note">None. Your matches aren't filtered for diet or allergens.</p>
+            {% else %}
+            <div class="cuisine-tags must-tags">
+                {% for label in diet_needs %}<span>Must be: {{ label }}</span>{% endfor %}
+                {% for label in allergens_avoided %}<span>{{ label }}</span>{% endfor %}
+            </div>
+            {% endif %}
 
             <a href="{{ url_for('quiz') }}"
                class="retake-button">

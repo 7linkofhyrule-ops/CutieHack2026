@@ -13,13 +13,18 @@
     <div class="wrap">
       <p class="site-name"><a href="/">UCR Dining Finder</a></p>
       <h1>Find your flavor</h1>
-      <p class="lead">Rate three tastes and pick your favorite cuisines. We’ll match you with dishes at the dining halls.</p>
+      <p class="lead">Rate three tastes, pick your favorite cuisines, and tell us anything you can’t eat. We’ll match you with dishes at the dining halls.</p>
     </div>
   </header>
 
   <main class="wrap">
     <!-- Change action to match your Flask route that handles the quiz -->
     <form class="quiz" id="quiz" action="{{ url_for('results') }}" method="post" autocomplete="off">
+
+      <div class="section-head">
+        <h2>Your tastes</h2>
+        <span class="tag tag-soft">Preferences · only change the ranking</span>
+      </div>
 
       <div>
         <div class="slider-head">
@@ -62,6 +67,37 @@
         </div>
         <p class="form-error" id="cuisine-error" role="alert" hidden>Pick at least two cuisines to continue.</p>
       </fieldset>
+
+      <div class="section-head section-head-must">
+        <h2>Dietary needs &amp; allergens</h2>
+        <span class="tag tag-must">Must avoid · hard rules</span>
+      </div>
+      <p class="hint must-intro">
+        Optional. Anything you tick here is a <strong>rule, not a preference</strong>: we will never
+        recommend a dish that conflicts with it, and we also hide dishes that have no dietary
+        information, because we can’t confirm they’re okay. Leave everything unticked if you have no restrictions.
+      </p>
+
+      <fieldset class="restriction-group">
+        <legend>Must be…</legend>
+        <div class="chips">
+          {% for item in legend if item.kind == 'diet' %}
+          <label class="chip must"><input type="checkbox" name="restriction" value="{{ item.code }}" {% if prefs and prefs.restrictions and item.code in prefs.restrictions %}checked{% endif %}><span>{{ item.label }}</span></label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <fieldset class="restriction-group">
+        <legend>Must not contain… <span class="legend-note">(tick anything you must avoid)</span></legend>
+        <div class="chips">
+          {% for item in legend if item.kind == 'allergen' %}
+          <label class="chip must"><input type="checkbox" name="restriction" value="{{ item.code }}" {% if prefs and prefs.restrictions and item.code in prefs.restrictions %}checked{% endif %}><span>{{ item.label }}</span></label>
+          {% endfor %}
+        </div>
+        <p class="hint">Avoiding gluten for health reasons such as celiac disease? Also tick <strong>Gluten Free</strong> above: “Contains Wheat” doesn’t cover every gluten source.</p>
+      </fieldset>
+
+      <p class="restriction-summary" id="restriction-summary" aria-live="polite"></p>
 
       {% if error %}
       <p class="form-error" role="alert">{{ error }}</p>

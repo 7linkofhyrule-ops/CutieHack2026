@@ -18,6 +18,8 @@
 
 <body>
 
+  {% from "_dietary.html" import dietary_tags %}
+
   <!-- Blue header -->
   <header class="hero">
     <div class="wrap">
@@ -113,6 +115,19 @@
         {% endif %}
 
       </div>
+
+      <!-- Dietary needs (hard rules, not taste preferences) -->
+      <h3>Dietary needs &amp; allergens <span class="must-pill">Must avoid</span></h3>
+
+      <div class="cuisine-list">
+        {% if restriction_labels is defined and restriction_labels %}
+          {% for label in restriction_labels %}
+            <span class="cuisine-chip must-chip">{{ label }}</span>
+          {% endfor %}
+        {% else %}
+          <span class="muted">None selected.</span>
+        {% endif %}
+      </div>
     </section>
 
     <!-- Food recommendations -->
@@ -158,6 +173,8 @@
                     {{ dish.description }}
                   </p>
                 {% endif %}
+
+                {{ dietary_tags(dish) }}
               </div>
 
             </article>

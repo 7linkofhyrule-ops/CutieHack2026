@@ -46,6 +46,8 @@ def init_user_db():
                 sweet    INTEGER NOT NULL CHECK (sweet  BETWEEN 1 AND 10),
                 savory   INTEGER NOT NULL CHECK (savory BETWEEN 1 AND 10),
                 cuisines TEXT NOT NULL,              -- comma-separated, e.g. "indian,italian"
+                restrictions TEXT,                   -- must-avoid/must-follow legend codes, comma-separated, e.g. "vegan,peanuts"
+                                                     -- NULL = never asked (rows from before this feature), '' = asked, none chosen
                 taken_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP   -- UTC
             );
 
@@ -53,6 +55,22 @@ def init_user_db():
                 ON quiz_results (user_id, id DESC);
             """
         )
+        _migrate(conn)
+
+
+def _migrate(conn):
+    """Bring an existing users.db up to date without touching any rows.
+
+    Old quiz_results rows keep restrictions = NULL ("never asked"), so existing users and
+    their quiz history are preserved and the app can nudge them to answer the new section.
+    """
+    columns = {row["name"] for row in conn.execute("PRAGMA table_info(quiz_results)")}
+    if "restrictions" not in columns:
+        try:
+            conn.execute("ALTER TABLE quiz_results ADD COLUMN restrictions TEXT")
+        except sqlite3.OperationalError as err:   # another process added it first
+            if "duplicate column" not in str(err).lower():
+                raise
 
 
 def create_user():
@@ -79,21 +97,30 @@ def touch_user(user_id):
         )
 
 
-def save_quiz_result(user_id, spice, sweet, savory, cuisines):
-    """Store one quiz submission. Every retake adds a new row, so history is kept."""
+def save_quiz_result(user_id, spice, sweet, savory, cuisines, restrictions=None):
+    """Store one quiz submission. Every retake adds a new row, so history is kept.
+
+    restrictions: list of legend codes (an empty list means "asked, none chosen").
+    None stores NULL, meaning "not asked".
+    """
+    stored = None if restrictions is None else ",".join(restrictions)
     with connect() as conn:
         conn.execute(
-            "INSERT INTO quiz_results (user_id, spice, sweet, savory, cuisines) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (user_id, spice, sweet, savory, ",".join(cuisines)),
+            "INSERT INTO quiz_results (user_id, spice, sweet, savory, cuisines, restrictions) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (user_id, spice, sweet, savory, ",".join(cuisines), stored),
         )
 
 
 def get_latest_result(user_id):
-    """Return the user's most recent quiz answers as a dict, or None if they never took it."""
+    """Return the user's most recent quiz answers as a dict, or None if they never took it.
+
+    Keys: spice, sweet, savory, cuisines (list), restrictions (list, or None for rows that
+    predate the dietary section), taken_at.
+    """
     with connect() as conn:
         row = conn.execute(
-            "SELECT spice, sweet, savory, cuisines, taken_at FROM quiz_results "
+            "SELECT spice, sweet, savory, cuisines, restrictions, taken_at FROM quiz_results "
             "WHERE user_id = ? ORDER BY id DESC LIMIT 1",
             (user_id,),
         ).fetchone()
@@ -104,5 +131,8 @@ def get_latest_result(user_id):
         "sweet": row["sweet"],
         "savory": row["savory"],
         "cuisines": row["cuisines"].split(",") if row["cuisines"] else [],
+        # None = never asked (old row); [] = asked, no restrictions; else list of legend codes
+        "restrictions": (None if row["restrictions"] is None
+                         else [c for c in row["restrictions"].split(",") if c]),
         "taken_at": row["taken_at"],
     }

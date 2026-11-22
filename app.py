@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
+import algorithm
 from home_feature import homepage_response
 import init_db as db
 
@@ -17,6 +18,13 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 CUISINES = {"mediterranean", "asian", "indian", "american", "hispanic", "african", "italian"}
 
 db.init_user_db()
+
+
+@app.context_processor
+def inject_legend():
+    """Make the dietary legend available to every template."""
+    return {"legend": algorithm.LEGEND, "legend_labels": algorithm.LEGEND_LABELS}
+
 
 
 # app.py: add anywhere below `app = Flask(__name__)`
@@ -64,13 +72,30 @@ def results():
     cuisines = request.form.getlist("cuisine")
     cuisines = [cuisine for cuisine in cuisines if cuisine in CUISINES]
 
+    # Dietary needs / allergens are safety rules, so unlike cuisines we never silently
+    # drop a value we don't recognize: we reject the whole submission instead.
+    submitted = request.form.getlist("restriction")
+    restrictions = [code for code in algorithm.LEGEND_CODES if code in submitted]  # valid, legend order
+    unrecognized = [code for code in submitted if code not in algorithm.LEGEND_CODES]
+
+    prefs = {
+        "spice": spice,
+        "sweet": sweet,
+        "savory": savory,
+        "cuisines": cuisines,
+        "restrictions": restrictions,      # keeps the boxes ticked if we re-show the quiz
+    }
+
+    if unrecognized:
+        return render_template(
+            "quiz.html",
+            prefs=prefs,
+            cuisines=CUISINES,
+            error="One of the dietary options wasn't recognized, so nothing was saved. "
+                  "Please check your dietary choices and try again.",
+        ), 400
+
     if len(cuisines) < 2:
-        prefs = {
-            "spice": spice,
-            "sweet": sweet,
-            "savory": savory,
-            "cuisines": cuisines,
-        }
         return render_template(
             "quiz.html",
             prefs=prefs,
@@ -84,6 +109,7 @@ def results():
         sweet,
         savory,
         cuisines,
+        restrictions,       # [] means "asked, no restrictions"
     )
 
     return redirect(url_for("home"))
